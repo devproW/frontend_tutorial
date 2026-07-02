@@ -1,13 +1,18 @@
 
-const Intro = () => {
+type IntroProps = {
+  name: string;
+  title: string;
+  description: string;
+};
+
+const Intro = ({ name, title, description } : IntroProps) => {
   return (
     <div>
-        <h1>Hi, I'm Firdaus</h1>
+        <h1>Hi, I'm {name}</h1>
 
-        <p>
-            I want to learn frontend development and become a frontend developer. I want to learn React, Next.js, and TypeScript. I also want to learn about web performance optimization and web accessibility. 
-        </p>
+        <h2>{title}</h2>
 
+        <p>{description}</p>
     </div>
   )
 }

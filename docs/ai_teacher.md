@@ -320,3 +320,146 @@ The final build passed after removing unused imports.
 React apps are built by composing components.
 
 Each component is a small piece of UI. A larger screen is created by combining smaller components together.
+
+## Day 2 - Props, Reusable Components, and Conditional Rendering
+
+Date: 2026-07-02
+
+### Topics Covered
+
+- What props are
+- Why props exist
+- How parent components pass data to child components
+- How TypeScript describes the shape of component props
+- How to reuse one component with different data
+- How to pass string, boolean, and number props
+- How to render different text based on a boolean value
+- How TypeScript catches missing required props
+
+### Key Ideas
+
+Props are values passed from a parent component to a child component.
+
+The mental model is similar to function arguments:
+
+- a function receives arguments
+- a component receives props
+- the component uses those props to decide what UI to render
+
+Props make components reusable. Instead of creating many hardcoded components, one component can receive different data each time it is rendered.
+
+TypeScript helps by defining the exact props a component expects:
+
+```tsx
+type ProfileCardProps = {
+  name: string;
+  role: string;
+  location: string;
+  learningGoal: string;
+  isAvailable: boolean;
+  yearsOfExperience: number;
+};
+```
+
+If a required prop is missing, TypeScript reports the problem before the app is built.
+
+### Project Structure Learned
+
+Added a reusable card component:
+
+```txt
+my-first-react-app/
+  src/
+    App.tsx
+    components/
+      Profile.tsx
+      Intro.tsx
+      Goal.tsx
+      ProfileCard.tsx
+```
+
+`App.tsx` acted as the parent component. It passed profile data into `ProfileCard`.
+
+`ProfileCard.tsx` acted as the child component. It received props and rendered a profile card.
+
+### Exercises Completed
+
+Created a reusable `ProfileCard` component that received:
+
+- `name`
+- `role`
+- `location`
+- `learningGoal`
+
+Rendered the same `ProfileCard` component three times from `App.tsx` with different values.
+
+Then extended the component with:
+
+- `isAvailable: boolean`
+- `yearsOfExperience: number`
+
+Used conditional rendering to show different status text:
+
+```tsx
+isAvailable ? "Available for collaboration" : "Currently focused on learning"
+```
+
+Used number-based conditional text to render:
+
+```txt
+0 years
+1 year
+5 years
+```
+
+### Issues Fixed
+
+Fixed a missing required prop.
+
+`ProfileCard` required `isAvailable`, but one card did not pass it. TypeScript caught this with a build error.
+
+Fixed a spelling issue in the prop name:
+
+```tsx
+isAvaliable
+```
+
+was corrected to:
+
+```tsx
+isAvailable
+```
+
+This improved readability and made the prop name clearer.
+
+### Build Verification
+
+Ran:
+
+```bash
+npm.cmd run build
+```
+
+The final build passed after all required props were provided.
+
+### Day 2 Takeaway
+
+Props let components receive data from their parent.
+
+A reusable component is more powerful than a hardcoded component because the same component can render different UI based on the props it receives.
+
+TypeScript makes props safer by checking that required data is passed correctly.
+
+### Next Topic
+
+Arrays and rendering lists with `.map()`.
+
+This will replace repeated component usage like:
+
+```tsx
+<ProfileCard />
+<ProfileCard />
+<ProfileCard />
+```
+
+with data-driven rendering from an array.

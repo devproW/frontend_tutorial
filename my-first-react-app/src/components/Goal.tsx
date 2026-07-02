@@ -1,13 +1,19 @@
 
-const Goal = () => {
+type GoalProps = {
+  goal1: string;
+  goal2: string;
+  goal3: string;
+};
+
+const Goal = ({ goal1, goal2, goal3 }: GoalProps) => {
   return (
     <div>
         <h2>Things I want to build</h2>
 
         <ul>
-            <li>Personal Finance Dashboard</li>
-            <li>AI powered expense tracker</li>
-            <li>Project Management App</li>
+            <li>{goal1}</li>
+            <li>{goal2}</li>
+            <li>{goal3}</li>
         </ul>
     </div>
   )

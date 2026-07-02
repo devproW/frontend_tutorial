@@ -3,12 +3,29 @@
 import Goal from "./Goal"
 import Intro from "./Intro"
 
-const Profile = () => {
+type ProfileProps = {
+  name: string;
+  title: string;
+  description: string;
+  goal1: string;
+  goal2: string;
+  goal3: string;
+};
+
+const Profile = ({ name, title, description, goal1, goal2, goal3 }: ProfileProps) => {
   return (
     <div>
-        <Intro />
+        <Intro
+         name = {name}
+         title = {title}
+         description = {description} 
+        />
 
-        <Goal />
+        <Goal
+         goal1 = {goal1}
+         goal2 = {goal2}
+         goal3 = {goal3}
+        />
 
         <button>Contact Me</button>
     </div>
