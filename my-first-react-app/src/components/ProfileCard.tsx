@@ -6,9 +6,10 @@ type ProfileCardProps = {
   isAvailable: boolean;
   yearsOfExperience: number; 
   favoriteTechnology: string;
+  isRemote: boolean;
 };  
 
-const ProfileCard = ({ name, role, location, learningGoal, isAvailable, yearsOfExperience, favoriteTechnology }: ProfileCardProps) => {
+const ProfileCard = ({ name, role, location, learningGoal, isAvailable, yearsOfExperience, favoriteTechnology, isRemote }: ProfileCardProps) => {
   return (
     <div>
       <h3>{name}</h3>
@@ -18,6 +19,7 @@ const ProfileCard = ({ name, role, location, learningGoal, isAvailable, yearsOfE
       <p>Learning Goal: {learningGoal}</p>
       <p>Status: {isAvailable ? "Available for collaboration" : "Currently focused on learning"}</p>
       <p>Favorite Technology: {favoriteTechnology}</p>
+      <p>Work Style: {isRemote ? "Remote" : "On-site"}</p>
     </div>
   )
 }

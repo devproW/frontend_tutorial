@@ -463,3 +463,167 @@ This will replace repeated component usage like:
 ```
 
 with data-driven rendering from an array.
+
+## Day 3 - Rendering Lists, Typed Arrays, and Semantic Structure
+
+Date: 2026-07-02
+
+### Topics Covered
+
+- How arrays are used to store repeated UI data
+- How `.map()` renders one component for each item in an array
+- Why React list items need a stable `key`
+- How to replace repeated JSX with data-driven rendering
+- How to type an array of objects with TypeScript
+- The difference between inferred types and explicit types
+- How semantic HTML headings should be structured
+- How boolean fields can drive conditional text
+
+### Key Ideas
+
+React applications often render repeated UI from arrays.
+
+Instead of manually writing:
+
+```tsx
+<ProfileCard />
+<ProfileCard />
+<ProfileCard />
+```
+
+the app now stores profile data in an array and renders cards with `.map()`:
+
+```tsx
+profiles.map((profile) => (
+  <ProfileCard key={profile.id} />
+))
+```
+
+This is called data-driven rendering. The UI is produced from data instead of being manually repeated.
+
+Each rendered item needs a stable `key` so React can track which item is which when the list changes. A real id is better than using the array index.
+
+TypeScript can infer the shape of an array automatically, but an explicit type creates a clearer contract:
+
+```tsx
+type Profile = {
+  id: number;
+  name: string;
+  role: string;
+  location: string;
+  learningGoal: string;
+  isAvailable: boolean;
+  yearsOfExperience: number;
+  favoriteTechnology: string;
+  isRemote: boolean;
+};
+
+const profiles: Profile[] = [];
+```
+
+This means every item in `profiles` must match the `Profile` shape.
+
+### Project Structure Used
+
+Continued working in:
+
+```txt
+my-first-react-app/
+  src/
+    App.tsx
+    components/
+      ProfileCard.tsx
+```
+
+`App.tsx` now owns the `profiles` array and maps over it.
+
+`ProfileCard.tsx` receives one profile's data through props and renders the card UI.
+
+### Exercises Completed
+
+Replaced repeated `ProfileCard` usage with a typed `profiles` array and `.map()`.
+
+Each profile object includes:
+
+- `id`
+- `name`
+- `role`
+- `location`
+- `learningGoal`
+- `isAvailable`
+- `yearsOfExperience`
+- `favoriteTechnology`
+- `isRemote`
+
+Added `favoriteTechnology` and rendered:
+
+```txt
+Favorite Technology: React
+```
+
+Added `isRemote` and rendered conditional work style text:
+
+```tsx
+isRemote ? "Remote" : "On-site"
+```
+
+Added a semantic section around the profile list:
+
+```tsx
+<section>
+  <h2>Team Profiles</h2>
+  ...
+</section>
+```
+
+Updated each profile card name from `<h2>` to `<h3>` so the heading structure is clearer:
+
+```txt
+h2 Team Profiles
+  h3 John Doe
+  h3 Jane Smith
+  h3 Alice Johnson
+```
+
+### Improvements Made
+
+Renamed the array from `profile` to `profiles` because it contains multiple profile objects.
+
+Renamed the `.map()` callback variable from `user` to `profile` so the variable matches the data being rendered:
+
+```tsx
+profiles.map((profile) => (
+```
+
+Added a `Profile` type to describe the profile data in `App.tsx`.
+
+Kept `ProfileCardProps` separate from `Profile` for now:
+
+- `Profile` describes the full data object, including `id`.
+- `ProfileCardProps` describes what the component receives.
+
+This distinction is important because not every field used by the parent must be passed into the child component.
+
+### Build Verification
+
+Ran:
+
+```bash
+npm.cmd run build
+```
+
+The build passed after each completed step.
+
+### Day 3 Takeaway
+
+React list rendering connects data to UI.
+
+Arrays store repeated data, `.map()` turns that data into components, and TypeScript makes the data shape safer.
+
+The current app now renders profile cards from a typed array instead of repeated hardcoded JSX.
+
+### Next Topic
+
+Extracting data into a separate file.
+
+This will move the `profiles` array out of `App.tsx` so `App` can focus more on rendering and less on storing inline data.

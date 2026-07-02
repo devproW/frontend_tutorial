@@ -2,6 +2,18 @@ import "./App.css";
 import Profile from "./components/Profile";
 import ProfileCard from "./components/ProfileCard";
 
+type Profile = {
+  id: number;
+  name: string;
+  role: string;
+  location: string;
+  learningGoal: string;
+  isAvailable: boolean;
+  yearsOfExperience: number;
+  favoriteTechnology: string;
+  isRemote: boolean;
+};
+
 function App() {
   const name = "Firdaus";
   const title = "Frontend Developer Student";
@@ -10,7 +22,7 @@ function App() {
   const goal2 = "Create a full-stack application";
   const goal3 = "Become a professional frontend developer";
 
-  const profiles = [
+  const profiles: Profile[] = [
     {
       id: 1,
       name: "John Doe",
@@ -19,7 +31,8 @@ function App() {
       learningGoal: goal1,
       isAvailable: true,
       yearsOfExperience: 0,
-      favoriteTechnology: "React"
+      favoriteTechnology: "React",
+      isRemote: true
     },
     {
       id: 2,
@@ -29,7 +42,8 @@ function App() {
       learningGoal: goal2,
       isAvailable: false,
       yearsOfExperience: 5,
-      favoriteTechnology: "Vue"
+      favoriteTechnology: "Vue",
+      isRemote: false
     },
     {
       id: 3,
@@ -39,7 +53,8 @@ function App() {
       learningGoal: goal3,
       isAvailable: true,
       yearsOfExperience: 1,
-      favoriteTechnology: "Angular"
+      favoriteTechnology: "Angular",
+      isRemote: true
     }
   ];
 
@@ -65,6 +80,7 @@ function App() {
             isAvailable={profile.isAvailable}
             yearsOfExperience={profile.yearsOfExperience}
             favoriteTechnology={profile.favoriteTechnology}
+            isRemote={profile.isRemote}
           />
         ))}
       </section>
