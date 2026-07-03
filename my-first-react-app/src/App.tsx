@@ -1,4 +1,5 @@
 import "./App.css";
+import Counter from "./components/Counter";
 import Profile from "./components/Profile";
 import ProfileCard from "./components/ProfileCard";
 import { profiles, goal1, goal2, goal3 } from "./data/profiles";
@@ -19,6 +20,7 @@ function App() {
         goal2={goal2}
         goal3={goal3}
       />
+      <Counter />
       <section>
         <h2>Team Profiles</h2>
         {profiles.map((profile) => (

@@ -828,3 +828,123 @@ The app is now prepared for the next major React concept: component state.
 State with `useState`.
 
 This will introduce interactive UI where components can own data that changes over time, such as counters, toggles, search text, and filters.
+
+## Day 6 - Component State with `useState`
+
+Date: 2026-07-03
+
+### Topics Covered
+
+- What React state is
+- Why state exists
+- How `useState` lets a component remember changing values
+- How to create number state
+- How event handlers update state
+- The difference between direct state values and setter functions
+- When to use the callback form of a state update
+- How to prevent state from entering an invalid value
+
+### Key Ideas
+
+State is data that belongs to a component and can change over time.
+
+The mental model is:
+
+```txt
+props = data passed into a component
+state = data owned and updated by a component
+```
+
+`useState` returns two things:
+
+```tsx
+const [count, setCount] = useState(0);
+```
+
+- `count` is the current state value.
+- `setCount` is the function used to update the value.
+- `0` is the initial value.
+
+When the setter function is called, React stores the new value and renders the component again.
+
+For updates that depend on the previous value, the callback form is preferred:
+
+```tsx
+setCount((currentCount) => currentCount + 1);
+```
+
+This is safer than relying directly on the current variable when the next state depends on the previous state.
+
+### Project Structure Used
+
+Added a new component:
+
+```txt
+src/
+  components/
+    Counter.tsx
+```
+
+Rendered it from:
+
+```txt
+src/
+  App.tsx
+```
+
+### Exercises Completed
+
+Created a `Counter` component with number state:
+
+- displayed the current count
+- added an increment button
+- added a decrement button
+- added a reset button
+- prevented the count from going below `0`
+
+The decrement logic used the callback form and conditional logic:
+
+```tsx
+setCount((currentCount) => (currentCount > 0 ? currentCount - 1 : 0));
+```
+
+### Improvements Made
+
+Changed increment and decrement to use callback-style state updates:
+
+```tsx
+setCount((currentCount) => currentCount + 1);
+setCount((currentCount) => (currentCount > 0 ? currentCount - 1 : 0));
+```
+
+Used a direct value for reset because reset does not depend on the previous value:
+
+```tsx
+setCount(0);
+```
+
+Discussed that longer inline event handlers can later be extracted into named functions such as `handleIncrement`, `handleDecrement`, and `handleReset` for readability.
+
+### Build Verification
+
+Ran:
+
+```bash
+npm.cmd run build
+```
+
+The build passed after the counter updates.
+
+### Day 6 Takeaway
+
+`useState` lets a React component own data that changes over time.
+
+State should be updated with the setter function, not by assigning to the state variable directly.
+
+When the next state depends on the previous state, use the callback form.
+
+### Next Topic
+
+Boolean state with `useState`.
+
+This will introduce UI that can switch between two states, such as show/hide details, open/close menus, and toggles.
