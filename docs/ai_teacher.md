@@ -627,3 +627,204 @@ The current app now renders profile cards from a typed array instead of repeated
 Extracting data into a separate file.
 
 This will move the `profiles` array out of `App.tsx` so `App` can focus more on rendering and less on storing inline data.
+
+## Day 4 - Extracting Data Into a Separate File
+
+Date: 2026-07-03
+
+### Topics Covered
+
+- Why repeated or static data can be moved out of components
+- How to create a `src/data/` folder
+- How to move the `profiles` array into `src/data/profiles.ts`
+- How to export data from one file and import it into another
+- The difference between `.ts` and `.tsx` files
+- How file names should describe what the file owns
+
+### Key Ideas
+
+Components should focus on rendering UI. Data files should store reusable or static data.
+
+Moving the `profiles` array out of `App.tsx` made `App` cleaner because it no longer needed to store all profile objects inline.
+
+The mental model is:
+
+```txt
+App.tsx = decides what appears on the page
+data/profiles.ts = stores profile data
+components/ProfileCard.tsx = displays one profile
+```
+
+A `.tsx` file is used when the file contains JSX. A plain TypeScript data file should use `.ts`.
+
+### Exercises Completed
+
+Created:
+
+```txt
+src/
+  data/
+    profiles.ts
+```
+
+Moved the `profiles` array from `App.tsx` into `profiles.ts`.
+
+Exported:
+
+```tsx
+export { profiles, goal1, goal2, goal3 };
+```
+
+Imported the data back into `App.tsx`:
+
+```tsx
+import { profiles, goal1, goal2, goal3 } from "./data/profiles";
+```
+
+Added a fourth profile object to practice updating data-driven UI.
+
+### Improvements Made
+
+Removed the unused `type Profile` from `App.tsx` after the profile array was moved.
+
+Renamed the data file from `profiles.tsx` to `profiles.ts` because it contains TypeScript data, not JSX.
+
+Cleaned up the `profiles.ts` formatting so the array objects and export statement are easier to read.
+
+### Build Verification
+
+Ran:
+
+```bash
+npm.cmd run build
+```
+
+The build passed after the data extraction and extension challenge.
+
+### Day 4 Takeaway
+
+Extracting data into a separate file keeps components smaller and prepares the app for larger project structure.
+
+The UI still renders from the same data, but the code is now better organized.
+
+## Day 5 - Shared Types and `import type`
+
+Date: 2026-07-03
+
+### Topics Covered
+
+- What shared TypeScript types are
+- Why types can be moved into a `src/types/` folder
+- How to export a type from one file
+- How to import a type using `import type`
+- The difference between data values and type-only imports
+- How to decide whether a type describes data or component props
+
+### Key Ideas
+
+Types describe the shape of data. They are contracts that help TypeScript catch mistakes before the app runs.
+
+The mental model is:
+
+```txt
+data = actual values used by the app
+type = the contract that describes those values
+```
+
+`import type` is used when importing something that only exists for TypeScript checking and is not needed at runtime:
+
+```tsx
+import type { ProfileData } from "../types/profile";
+```
+
+This makes the intent clear: the import is only a type, not a JavaScript value.
+
+### Project Structure Learned
+
+Added:
+
+```txt
+src/
+  types/
+    profile.ts
+```
+
+Current structure:
+
+```txt
+src/
+  App.tsx
+  components/
+    Profile.tsx
+    ProfileCard.tsx
+  data/
+    profiles.ts
+  types/
+    profile.ts
+```
+
+### Exercises Completed
+
+Moved `ProfileData` from `profiles.ts` into `types/profile.ts`.
+
+Used `ProfileData` in `profiles.ts`:
+
+```tsx
+import type { ProfileData } from "../types/profile";
+```
+
+Moved `ProfileProps` from `components/Profile.tsx` into `types/profile.ts`.
+
+Used `ProfileProps` in `Profile.tsx`:
+
+```tsx
+import type { ProfileProps } from "../types/profile";
+```
+
+### Improvements Made
+
+Separated the profile list data shape from the actual profile data.
+
+Kept the naming distinction clear:
+
+- `ProfileData` describes objects in the profile list.
+- `ProfileProps` describes the props received by the `Profile` component.
+
+Discussed two valid export styles:
+
+```tsx
+type ProfileData = {};
+export type { ProfileData };
+```
+
+and:
+
+```tsx
+export type ProfileData = {};
+```
+
+The inline export style is common when a type is obviously shared, while exporting at the bottom can be useful when a file has both internal and public types.
+
+### Build Verification
+
+Ran:
+
+```bash
+npm.cmd run build
+```
+
+The build passed after moving the shared types.
+
+### Day 5 Takeaway
+
+Shared types keep data contracts consistent across files.
+
+`import type` helps make TypeScript-only imports explicit.
+
+The app is now prepared for the next major React concept: component state.
+
+### Next Topic
+
+State with `useState`.
+
+This will introduce interactive UI where components can own data that changes over time, such as counters, toggles, search text, and filters.

@@ -1,35 +1,26 @@
 // import React from 'react'
 
-import Goal from "./Goal"
-import Intro from "./Intro"
+import Goal from "./Goal";
+import Intro from "./Intro";
+import type { ProfileProps } from "../types/profile";
 
-type ProfileProps = {
-  name: string;
-  title: string;
-  description: string;
-  goal1: string;
-  goal2: string;
-  goal3: string;
-};
-
-const Profile = ({ name, title, description, goal1, goal2, goal3 }: ProfileProps) => {
+const Profile = ({
+  name,
+  title,
+  description,
+  goal1,
+  goal2,
+  goal3,
+}: ProfileProps) => {
   return (
     <div>
-        <Intro
-         name = {name}
-         title = {title}
-         description = {description} 
-        />
+      <Intro name={name} title={title} description={description} />
 
-        <Goal
-         goal1 = {goal1}
-         goal2 = {goal2}
-         goal3 = {goal3}
-        />
+      <Goal goal1={goal1} goal2={goal2} goal3={goal3} />
 
-        <button>Contact Me</button>
+      <button>Contact Me</button>
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
