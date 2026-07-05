@@ -948,3 +948,143 @@ When the next state depends on the previous state, use the callback form.
 Boolean state with `useState`.
 
 This will introduce UI that can switch between two states, such as show/hide details, open/close menus, and toggles.
+
+## Day 7 - Boolean State, Conditional Rendering, and Named Event Handlers
+
+Date: 2026-07-05
+
+### Topics Covered
+
+- How to create boolean state with `useState(false)`
+- How boolean state represents UI conditions such as shown/hidden
+- How to toggle boolean state with the callback form
+- How to conditionally render UI with `&&`
+- How to combine boolean conditions with the `||` operator
+- How multiple pieces of state can belong to one component
+- How named event handlers improve JSX readability
+- How related state values can be coordinated together
+
+### Key Ideas
+
+Boolean state stores a `true` or `false` value.
+
+The mental model is:
+
+```txt
+false = hidden / off / closed
+true = visible / on / open
+```
+
+Boolean state is useful for UI patterns such as:
+
+- showing or hiding details
+- opening or closing menus
+- toggling optional information
+- showing controls only when they are useful
+
+When the next boolean value depends on the previous value, the callback form is preferred:
+
+```tsx
+setShowDetails((currentShowDetails) => !currentShowDetails);
+```
+
+Conditional rendering with `&&` means:
+
+```txt
+If the condition is true, render this UI.
+If the condition is false, render nothing.
+```
+
+The `||` operator was used to show a reset button when at least one optional detail was visible:
+
+```tsx
+(showEmail || showLearningFocus) && ...
+```
+
+### Project Structure Used
+
+Added and continued working in:
+
+```txt
+src/
+  components/
+    ProfileDetails.tsx
+```
+
+Rendered `ProfileDetails` from:
+
+```txt
+src/
+  App.tsx
+```
+
+### Exercises Completed
+
+Created a `ProfileDetails` component with boolean state:
+
+- `showDetails`
+- `showEmail`
+- `showLearningFocus`
+
+Added buttons to:
+
+- show or hide the main details section
+- show or hide the email
+- show or hide the learning focus
+- hide all optional details at once
+
+Used conditional rendering so optional UI only appears when the matching state is `true`.
+
+### Improvements Made
+
+Changed the outer wrapper from a plain `div` to a semantic `section`.
+
+Moved the email and learning-focus controls inside the details section so the UI relationship is clearer.
+
+Added a named handler for resetting optional details:
+
+```tsx
+const handleHideOptionalDetails = () => {
+  setShowEmail(false);
+  setShowLearningFocus(false);
+};
+```
+
+Refined the main details toggle so optional details are reset only when the details section is being closed.
+
+Extracted inline event handlers into named functions:
+
+- `handleToggleDetails`
+- `handleToggleEmail`
+- `handleToggleLearningFocus`
+- `handleHideOptionalDetails`
+
+This made the JSX easier to scan because the JSX now describes what happens, while the handler functions describe how it happens.
+
+Added conditional rendering for the reset button so `Hide optional details` only appears when at least one optional detail is visible.
+
+### Verification
+
+Ran:
+
+```bash
+npx.cmd tsc -b
+```
+
+The TypeScript check passed.
+
+The full Vite build was attempted earlier, but Vite failed with a Windows `EPERM` spawn issue while loading `vite.config.ts`. This did not appear to be caused by the React or TypeScript code written for the lesson.
+
+### Day 7 Takeaway
+
+Boolean state lets a component remember simple UI conditions.
+
+State controls what the user sees, event handlers update that state, and React re-renders the UI from the new state.
+
+Named event handlers are useful when JSX starts becoming difficult to read or when one user action updates multiple pieces of state.
+
+### Next Topic
+
+String state with controlled inputs.
+
+This will introduce text fields, `value`, `onChange`, and the idea that React can control form input values through state.
