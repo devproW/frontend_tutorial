@@ -1371,3 +1371,176 @@ Derived data such as `filteredProfiles` should usually be calculated from existi
 Select state with controlled form controls.
 
 This will add a dropdown filter so the app can combine typed search text with a selected category such as all profiles, available profiles, remote profiles, or technology-specific profiles.
+
+## Day 10 - Select State, Combined Filters, and Derived UI Text
+
+Date: 2026-07-06
+
+### Topics Covered
+
+- How to create controlled select inputs with `value` and `onChange`
+- How select state is similar to controlled text input state
+- How to type select change events with `React.ChangeEvent<HTMLSelectElement>`
+- How to lift dropdown state into `App.tsx`
+- How to combine multiple filters using derived booleans
+- How to keep filtered data derived instead of storing it as state
+- How to show result counts from `filteredProfiles.length`
+- How to handle singular and plural UI text
+- How to show a clear-filters button only when filters are active
+- How one event handler can coordinate multiple state updates
+
+### Key Ideas
+
+A controlled select is a dropdown whose selected value comes from React state.
+
+The mental model is:
+
+```txt
+state value = what React remembers
+select value = what React displays
+onChange = how React updates state when the user chooses an option
+```
+
+The selected filter state lives in `App.tsx` because `App` owns the profile list and needs the selected value to decide which profiles should render.
+
+The app now combines two independent filter checks:
+
+```txt
+matchesSearch && matchesFilter
+```
+
+This separation matters because search text and dropdown filters represent different kinds of conditions.
+
+Search checks text fields:
+
+- `name`
+- `role`
+- `location`
+- `favoriteTechnology`
+
+Dropdown filters can check boolean fields or exact technology values:
+
+- `available` checks `profile.isAvailable`
+- `remote` checks `profile.isRemote`
+- `onsite` checks `!profile.isRemote`
+- `react`, `angular`, and `vue` check `profile.favoriteTechnology`
+
+### Project Structure Used
+
+Added a new component:
+
+```txt
+my-first-react-app/
+  src/
+    components/
+      ProfileFilter.tsx
+```
+
+Continued working in:
+
+```txt
+my-first-react-app/
+  src/
+    App.tsx
+    components/
+      SearchBox.tsx
+      ProfileFilter.tsx
+      ProfileCard.tsx
+```
+
+`App.tsx` now owns both:
+
+```tsx
+const [searchText, setSearchText] = useState("");
+const [selectedFilter, setSelectedFilter] = useState("all");
+```
+
+### Exercises Completed
+
+Created a `ProfileFilter` component with a controlled `<select>`.
+
+The dropdown includes these filter options:
+
+- All profiles
+- Available profiles
+- Remote profiles
+- On-site profiles
+- React profiles
+- Angular profiles
+- Vue profiles
+
+Passed `selectedFilter` and `setSelectedFilter` from `App.tsx` into `ProfileFilter`.
+
+Updated the profile filtering logic so profiles must pass both conditions:
+
+```txt
+matchesSearch
+matchesFilter
+```
+
+Added result-count text based on `filteredProfiles.length`, including singular and plural wording:
+
+```txt
+Showing 1 profile
+Showing 2 profiles
+No profiles found
+```
+
+Added a `Clear Filters` button that appears only when a search or dropdown filter is active.
+
+The clear handler resets both pieces of state:
+
+```tsx
+setSelectedFilter("all");
+setSearchText("");
+```
+
+### Improvements Made
+
+Separated search matching from dropdown filter matching instead of mixing both checks into one expression.
+
+Changed the dropdown value for on-site profiles to a simpler code-friendly value:
+
+```txt
+onsite
+```
+
+Used a derived boolean to decide when the clear button should render:
+
+```tsx
+const hasActiveFilter = selectedFilter !== "all" || hasSearchText;
+```
+
+Moved the result count into its own paragraph instead of placing it inside the heading.
+
+Used `null` instead of an empty string when rendering nothing in JSX.
+
+### Verification
+
+Ran:
+
+```bash
+npx.cmd tsc -b
+```
+
+The TypeScript check passed after the final review.
+
+### Day 10 Takeaway
+
+Controlled form state is not only for text inputs.
+
+Dropdowns can also be controlled by React state, and that state can be combined with other state values to derive the UI.
+
+The important pattern is:
+
+```txt
+original data + current state values -> derived visible data -> rendered UI
+```
+
+The app now filters profiles using both typed search text and a selected dropdown category.
+
+### Next Topic
+
+Type-safe filter values with TypeScript union types.
+
+This will make `selectedFilter` safer by allowing only known values such as `"all"`, `"available"`, `"remote"`, `"onsite"`, `"react"`, `"angular"`, and `"vue"`.
