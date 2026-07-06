@@ -1088,3 +1088,136 @@ Named event handlers are useful when JSX starts becoming difficult to read or wh
 String state with controlled inputs.
 
 This will introduce text fields, `value`, `onChange`, and the idea that React can control form input values through state.
+
+## Day 8 - String State with Controlled Inputs
+
+Date: 2026-07-06
+
+### Topics Covered
+
+- What string state is
+- Why text input values are stored in React state
+- How controlled inputs work with `value` and `onChange`
+- How to type input change events in TypeScript
+- How to create named event handlers for input changes
+- How to conditionally render UI based on text state
+- How to derive readable booleans from state
+- How formatting affects JSX readability
+
+### Key Ideas
+
+String state stores text that can change over time.
+
+The mental model is:
+
+```txt
+state value = what React remembers
+input value = what React displays
+onChange = how React updates state when the user types
+```
+
+A controlled input is an input whose displayed value comes from React state:
+
+```tsx
+<input value={searchText} onChange={handleSearchChange} />
+```
+
+This means React becomes the source of truth for the input value.
+
+The input change event was typed with:
+
+```tsx
+React.ChangeEvent<HTMLInputElement>
+```
+
+This tells TypeScript that the event comes from an HTML input element, so `event.target.value` is known to be available.
+
+### Project Structure Used
+
+Added a new component:
+
+```txt
+src/
+  components/
+    SearchBox.tsx
+```
+
+Rendered it from:
+
+```txt
+src/
+  App.tsx
+```
+
+### Exercises Completed
+
+Created a `SearchBox` component with string state:
+
+- `searchText`
+
+Added:
+
+- a semantic `section`
+- a heading
+- a connected `label` and `input`
+- a controlled input using `value` and `onChange`
+- a message showing the current search text
+- an empty-state message when no search text exists
+- a `Clear` button that only appears when there is text
+- feedback when the search text is shorter than 3 characters
+- feedback when the search text is ready to search
+
+### Improvements Made
+
+Changed the display message so the whole sentence is conditional instead of only part of the sentence.
+
+Added a named handler for clearing the search:
+
+```tsx
+const handleClearSearch = () => {
+  setSearchText("");
+};
+```
+
+Introduced derived booleans to make JSX easier to read:
+
+```tsx
+const hasSearchText = searchText.length > 0;
+const canSearch = searchText.length >= 3;
+```
+
+Used those booleans instead of repeating raw checks like:
+
+```tsx
+searchText.length > 2
+```
+
+Formatted longer JSX conditionals across multiple lines so the component is easier to scan.
+
+### Verification
+
+Ran:
+
+```bash
+npx.cmd tsc -b
+```
+
+The TypeScript check passed after each completed step.
+
+### Day 8 Takeaway
+
+Controlled inputs let React manage user-typed text.
+
+The important loop is:
+
+```txt
+user types -> onChange runs -> state updates -> React re-renders -> input displays the new state
+```
+
+Derived booleans such as `hasSearchText` and `canSearch` make conditional rendering easier to understand.
+
+### Next Topic
+
+Lifting state up.
+
+This will move search state to the component that owns the profile list so the search text can eventually filter rendered profiles.

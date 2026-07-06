@@ -3,6 +3,7 @@ import Counter from "./components/Counter";
 import Profile from "./components/Profile";
 import ProfileCard from "./components/ProfileCard";
 import ProfileDetails from "./components/ProfileDetails";
+import SearchBox from "./components/SearchBox";
 import { profiles, goal1, goal2, goal3 } from "./data/profiles";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         goal2={goal2}
         goal3={goal3}
       />
+      <SearchBox />
       <ProfileDetails />
       <Counter />
       <section>
