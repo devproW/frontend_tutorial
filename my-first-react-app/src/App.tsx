@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 import Counter from "./components/Counter";
 import Profile from "./components/Profile";
@@ -11,6 +12,26 @@ function App() {
   const title = "Frontend Developer Student";
   const description =
     "I am learning React and TypeScript so I can build modern web applications.";
+  const [searchText, setSearchText] = useState("");
+  const normalizedSearchText = searchText.trim().toLowerCase();
+  const hasSearchText = normalizedSearchText.length > 0;
+  const filteredProfiles = profiles.filter((profile) => {
+    if (!hasSearchText) {
+      return true;
+    }
+
+    const searchableFields = [
+      profile.name,
+      profile.role,
+      profile.location,
+      profile.favoriteTechnology,
+    ];
+
+    return searchableFields.some((field) =>
+      field.toLowerCase().includes(normalizedSearchText),
+    );
+  });
+  const hasFilteredProfiles = filteredProfiles.length > 0;
 
   return (
     <div className="app">
@@ -22,24 +43,26 @@ function App() {
         goal2={goal2}
         goal3={goal3}
       />
-      <SearchBox />
+      <SearchBox searchText={searchText} onSearchChange={setSearchText} />
       <ProfileDetails />
       <Counter />
       <section>
         <h2>Team Profiles</h2>
-        {profiles.map((profile) => (
-          <ProfileCard
-            key={profile.id}
-            name={profile.name}
-            role={profile.role}
-            location={profile.location}
-            learningGoal={profile.learningGoal}
-            isAvailable={profile.isAvailable}
-            yearsOfExperience={profile.yearsOfExperience}
-            favoriteTechnology={profile.favoriteTechnology}
-            isRemote={profile.isRemote}
-          />
-        ))}
+        {hasFilteredProfiles
+          ? filteredProfiles.map((profile) => (
+              <ProfileCard
+                key={profile.id}
+                name={profile.name}
+                role={profile.role}
+                location={profile.location}
+                learningGoal={profile.learningGoal}
+                isAvailable={profile.isAvailable}
+                yearsOfExperience={profile.yearsOfExperience}
+                favoriteTechnology={profile.favoriteTechnology}
+                isRemote={profile.isRemote}
+              />
+            ))
+          : hasSearchText && <p>No profiles found.</p>}
       </section>
     </div>
   );

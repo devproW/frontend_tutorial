@@ -1,15 +1,18 @@
-import { useState } from "react";
+type SearchBoxProps = {
+  searchText: string;
+  onSearchChange: (value: string) => void;
+};
 
-const SearchBox = () => {
-  const [searchText, setSearchText] = useState("");
+const SearchBox = ({ searchText, onSearchChange }: SearchBoxProps) => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(event.target.value);
+    onSearchChange(event.target.value);
   };
   const handleClearSearch = () => {
-    setSearchText("");
+    onSearchChange("");
   };
-  const hasSearchText = searchText.length > 0;
-  const canSearch = searchText.length >= 3;
+  const trimmedSearchText = searchText.trim();
+  const hasSearchText = trimmedSearchText.length > 0;
+  const canSearch = trimmedSearchText.length >= 3;
 
   return (
     <section>
@@ -22,15 +25,18 @@ const SearchBox = () => {
         onChange={handleSearchChange}
       />
       {hasSearchText && <button onClick={handleClearSearch}>Clear</button>}
-      <p>
-        {hasSearchText &&
-          (canSearch
+
+      {hasSearchText && (
+        <p>
+          {canSearch
             ? "Ready to search profiles."
-            : "Type at least 3 characters to search.")}
-      </p>
+            : "Type at least 3 characters to search."}
+        </p>
+      )}
+
       <p>
         {hasSearchText
-          ? `Searching for: ${searchText}`
+          ? `Searching for: ${trimmedSearchText}`
           : "Type something to search"}
       </p>
     </section>

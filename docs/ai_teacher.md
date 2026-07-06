@@ -1221,3 +1221,153 @@ Derived booleans such as `hasSearchText` and `canSearch` make conditional render
 Lifting state up.
 
 This will move search state to the component that owns the profile list so the search text can eventually filter rendered profiles.
+
+## Day 9 - Lifting State Up and Filtering Derived Data
+
+Date: 2026-07-06
+
+### Topics Covered
+
+- What lifting state up means
+- Why state sometimes needs to move from a child component to a parent component
+- How parent components pass state values and update functions to children
+- How controlled inputs can be controlled by a parent component
+- How to derive filtered data from state instead of storing extra state
+- How to normalize search input with `trim()` and `toLowerCase()`
+- How to render empty search results with conditional rendering
+- How to improve filter readability with `.some()`
+
+### Key Ideas
+
+Lifting state up means moving state to the closest parent component that needs to coordinate it.
+
+The mental model is:
+
+```txt
+Parent owns the state.
+Child receives the value.
+Child calls a function when the user changes something.
+Parent updates state.
+React re-renders the UI from the new state.
+```
+
+`SearchBox` originally owned `searchText`, but the profile list also needed the search text in order to filter profiles. So `searchText` was moved into `App.tsx`, and `SearchBox` became a controlled child component.
+
+The app now follows this data flow:
+
+```txt
+searchText -> normalizedSearchText -> hasSearchText -> filteredProfiles -> rendered profile cards
+```
+
+`filteredProfiles` is derived data, not state. It is calculated from the existing `profiles` data and the current `searchText`.
+
+### Project Structure Used
+
+Continued working in:
+
+```txt
+my-first-react-app/
+  src/
+    App.tsx
+    components/
+      SearchBox.tsx
+      ProfileCard.tsx
+    data/
+      profiles.ts
+```
+
+`App.tsx` now owns the search state and filtering logic.
+
+`SearchBox.tsx` receives:
+
+```tsx
+type SearchBoxProps = {
+  searchText: string;
+  onSearchChange: (value: string) => void;
+};
+```
+
+### Exercises Completed
+
+Moved `searchText` state from `SearchBox` into `App.tsx`:
+
+```tsx
+const [searchText, setSearchText] = useState("");
+```
+
+Passed the state and setter down to `SearchBox`:
+
+```tsx
+<SearchBox searchText={searchText} onSearchChange={setSearchText} />
+```
+
+Updated `SearchBox` so it no longer owns search state. It now receives the value through props and reports changes upward:
+
+```tsx
+onSearchChange(event.target.value);
+```
+
+Added filtering in `App.tsx` so the profile list responds to search input.
+
+Expanded search to match multiple fields:
+
+- `name`
+- `role`
+- `location`
+- `favoriteTechnology`
+
+Added a no-results message when a real search has no matching profiles.
+
+### Improvements Made
+
+Created normalized search values so search behavior is consistent:
+
+```tsx
+const normalizedSearchText = searchText.trim().toLowerCase();
+const hasSearchText = normalizedSearchText.length > 0;
+```
+
+Used a trimmed value in `SearchBox` so spaces-only input does not behave like a real search:
+
+```tsx
+const trimmedSearchText = searchText.trim();
+const hasSearchText = trimmedSearchText.length > 0;
+const canSearch = trimmedSearchText.length >= 3;
+```
+
+Refactored a long `||` filter condition into a searchable fields array with `.some()`:
+
+```tsx
+const searchableFields = [
+  profile.name,
+  profile.role,
+  profile.location,
+  profile.favoriteTechnology,
+];
+```
+
+This made the filter easier to read and easier to extend later.
+
+### Verification
+
+Ran:
+
+```bash
+npx.cmd tsc -b
+```
+
+The TypeScript check passed after each completed step.
+
+### Day 9 Takeaway
+
+State should live where the data is needed.
+
+When one component renders an input and another part of the UI needs the input value, lift the state to their closest shared parent.
+
+Derived data such as `filteredProfiles` should usually be calculated from existing state and data instead of stored as separate state.
+
+### Next Topic
+
+Select state with controlled form controls.
+
+This will add a dropdown filter so the app can combine typed search text with a selected category such as all profiles, available profiles, remote profiles, or technology-specific profiles.
